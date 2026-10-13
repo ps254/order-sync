@@ -1,0 +1,21 @@
+name: order-sync
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ordersync
+      POSTGRES_USER: ordersync
+      POSTGRES_PASSWORD: ordersync
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ordersync -d ordersync"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - ordersync-pg:/var/lib/postgresql/data
+
+volumes:
+  ordersync-pg:
